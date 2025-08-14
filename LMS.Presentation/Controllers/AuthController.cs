@@ -1,10 +1,12 @@
-﻿using LMS.Shared.DTOs.AuthDtos;
+﻿//Ignore Spelling: api auth Dto
+using LMS.Shared.DTOs.AuthDtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Swashbuckle.AspNetCore.Annotations;
+
 
 namespace LMS.Presentation.Controllers;
 
@@ -39,10 +41,10 @@ public class AuthController : ControllerBase
         Description = "Validates user credentials and returns a JWT token for authorization."
     )]
     [SwaggerResponse(StatusCodes.Status200OK, "Authentication successful", typeof(TokenDto))]
-    [SwaggerResponse(StatusCodes.Status401Unauthorized, "Invalid username or password")]
+    [SwaggerResponse(StatusCodes.Status401Unauthorized, "Invalid user name or password")]
     public async Task<IActionResult> Authenticate(UserAuthDto user)
     {
-        if (!await serviceManager.AuthService.ValidateUserAsync(user))
+        if(!await serviceManager.AuthService.ValidateUserAsync(user))
             return Unauthorized();
 
         var tokenDto = await serviceManager.AuthService.CreateTokenAsync(addTime: true);
