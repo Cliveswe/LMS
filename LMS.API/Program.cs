@@ -41,7 +41,7 @@ public class Program
         }
 
         app.UseHttpsRedirection();
-        app.UseCors(); //Add policy here if you dont use default cors policy
+        app.UseCors("AllowAll"); 
 
         app.UseAuthentication();
         app.UseAuthorization();
