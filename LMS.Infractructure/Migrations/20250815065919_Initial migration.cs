@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿//Ignore Spelling: Initialmigration
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 

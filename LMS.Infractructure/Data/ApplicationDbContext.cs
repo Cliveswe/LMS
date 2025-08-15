@@ -1,4 +1,5 @@
-﻿using Domain.Models.Entities;
+﻿//Ignore Spelling: LMS
+using Domain.Models.Entities;
 using LMS.Infrastructure.Data.Configurations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
