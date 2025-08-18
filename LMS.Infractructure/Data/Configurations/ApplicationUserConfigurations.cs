@@ -10,5 +10,15 @@ public class ApplicationUserConfigurations : IEntityTypeConfiguration<Applicatio
     {
         builder.ToTable("ApplicationUser");
         //Add more configurations here
+        builder.Property(u => u.FirstName)
+                   .HasMaxLength(100);
+
+        builder.Property(u => u.LastName)
+               .HasMaxLength(100);
+
+        builder.HasMany(u => u.Courses)
+                   .WithMany(c => c.Users)
+                   .UsingEntity(j => j.ToTable("UserCourses")); // join table name
+
     }
 }
