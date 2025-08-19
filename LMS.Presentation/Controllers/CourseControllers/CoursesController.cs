@@ -7,10 +7,12 @@ namespace LMS.Presentation.Controllers.CourseControllers;
 
 [Route("api/course")]
 [ApiController]
+[Produces("application/json")] // Ensures all responses are documented as JSON
 public class CoursesController(IServiceManager serviceManager) : Controller
 {
 
     [HttpPost]
+    [Consumes("application/json")] // Correct MIME type for POSTing a DTO
     public IActionResult CreateCourse(CourseCreateDto courseCreateDto)
     {
 
