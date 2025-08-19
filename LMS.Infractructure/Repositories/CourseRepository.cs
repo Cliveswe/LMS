@@ -1,10 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Domain.Contracts.Repositories;
+using Domain.Models.Entities;
+using LMS.Infrastructure.Data;
 
 namespace LMS.Infrastructure.Repositories;
-public class CourseRepository
+public class CourseRepository : RepositoryBase<Course>, ICourseRepository
 {
+    public CourseRepository(ApplicationDbContext context) : base(context)
+    {
+
+    }
 }
