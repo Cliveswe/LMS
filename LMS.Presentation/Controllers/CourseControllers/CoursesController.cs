@@ -1,4 +1,5 @@
-﻿//Ignore Spelling: api
+﻿//Ignore Spelling: api dto
+using LMS.Shared.DTOs.CourseDtos;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 
@@ -10,9 +11,9 @@ public class CoursesController(IServiceManager serviceManager) : Controller
 {
 
     [HttpPost]
-    public IActionResult CreateCourse(string nameOfCourse)
+    public IActionResult CreateCourse(CourseCreateDto courseCreateDto)
     {
-
+        serviceManager.AddCourse(courseCreateDto);
 
         return Ok();
     }
