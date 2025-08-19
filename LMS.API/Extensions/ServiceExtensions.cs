@@ -87,6 +87,8 @@ public static class ServiceExtensions
     public static void AddServiceLayer(this IServiceCollection services)
     {
         services.AddScoped<IServiceManager, ServiceManager>();
+        services.AddScoped<ICourseService, CourseService>();
+        services.AddScoped(provider => new Lazy<ICourseService>(() => provider.GetRequiredService<ICourseService>()));
 
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped(provider => new Lazy<IAuthService>(() => provider.GetRequiredService<IAuthService>()));
