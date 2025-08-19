@@ -9,4 +9,9 @@ public class CourseRepository : RepositoryBase<Course>, ICourseRepository
     {
 
     }
+
+    public void Add(Course course)
+    {
+        Create(course);
+    }
 }

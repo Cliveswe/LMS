@@ -1,5 +1,8 @@
-﻿namespace Domain.Contracts.Repositories;
+﻿using Domain.Models.Entities;
+
+namespace Domain.Contracts.Repositories;
 
 public interface ICourseRepository
 {
+    void Add(Course course);
 }

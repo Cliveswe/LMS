@@ -1,6 +1,7 @@
 ﻿//Ignore Spelling: dto
 using AutoMapper;
 using Domain.Contracts.Repositories;
+using Domain.Models.Entities;
 using LMS.Shared.DTOs.CourseDtos;
 using Service.Contracts;
 
@@ -9,6 +10,13 @@ public class CourseService(IMapper mapper, IUnitOfWork unitOfWork) : ICourseServ
 {
     public void AddCourse(CourseCreateDto courseCreateDto)
     {
-        throw new NotImplementedException();
+        // Map DTO -> Entity
+        var course = mapper.Map<Course>(courseCreateDto);
+
+        // Add using repository
+        unitOfWork.Courses.Add(course);
+
+        // Save changes
+        unitOfWork.CompleteAsync().GetAwaiter().GetResult(); // synchronous call for now
     }
 }
