@@ -6,6 +6,6 @@ using System.Threading.Tasks;
 
 namespace LMS.Infrastructure.Data;
 
-internal class SeedData
+public class SeedData
 {
 }
