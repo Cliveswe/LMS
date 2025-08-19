@@ -14,4 +14,6 @@ public class CourseRepository : RepositoryBase<Course>, ICourseRepository
     {
         Create(course);
     }
+
+    //TODO: Create getAll to get all courses.
 }

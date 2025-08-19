@@ -20,4 +20,7 @@ public class CoursesController(IServiceManager serviceManager) : Controller
 
         return Ok();
     }
+
+
+    //TODO: Create endpoint to get all courses.
 }

@@ -22,4 +22,6 @@ public class CourseService(IMapper mapper, IUnitOfWork unitOfWork) : ICourseServ
         // Save changes
         unitOfWork.CompleteAsync().GetAwaiter().GetResult(); // synchronous call for now
     }
+
+    //TODO: Create service to get all courses.
 }
