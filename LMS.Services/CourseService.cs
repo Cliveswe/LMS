@@ -10,6 +10,9 @@ public class CourseService(IMapper mapper, IUnitOfWork unitOfWork) : ICourseServ
 {
     public void AddCourse(CourseCreateDto courseCreateDto)
     {
+        if (courseCreateDto is null)
+            throw new ArgumentNullException(nameof(courseCreateDto));
+
         // Map DTO -> Entity
         var course = mapper.Map<Course>(courseCreateDto);
 
