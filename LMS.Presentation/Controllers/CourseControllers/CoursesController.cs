@@ -8,4 +8,12 @@ namespace LMS.Presentation.Controllers.CourseControllers;
 [ApiController]
 public class CoursesController(IServiceManager serviceManager) : Controller
 {
+
+    [HttpPost]
+    public IActionResult CreateCourse(string nameOfCourse)
+    {
+
+
+        return Ok();
+    }
 }
