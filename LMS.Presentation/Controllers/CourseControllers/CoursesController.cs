@@ -13,7 +13,7 @@ public class CoursesController(IServiceManager serviceManager) : Controller
     [HttpPost]
     public IActionResult CreateCourse(CourseCreateDto courseCreateDto)
     {
-        //serviceManager..AddCourse(courseCreateDto);
+
         serviceManager.CourseService.AddCourse(courseCreateDto);
 
         return Ok();

@@ -2,6 +2,7 @@
 using AutoMapper;
 using Domain.Contracts.Repositories;
 using LMS.Shared.DTOs.CourseDtos;
+using Service.Contracts;
 
 namespace LMS.Services;
 public class CourseService(IMapper mapper, IUnitOfWork unitOfWork) : ICourseService
