@@ -1,4 +1,4 @@
-﻿//Ignore Spelling: api dto
+﻿//Ignore Spelling: api dto json
 using LMS.Shared.DTOs.CourseDtos;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
@@ -21,6 +21,10 @@ public class CoursesController(IServiceManager serviceManager) : Controller
         return Ok();
     }
 
-
-    //TODO: Create endpoint to get all courses.
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<CourseDto>>> GetAllCourses()
+    {
+        var result = await serviceManager.CourseService.GetAllAsync();
+        return Ok(result);
+    }
 }
