@@ -7,10 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="9.0.8" />
     <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="9.0.8" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\LMS.Infractructure\LMS.Infrastructure.csproj" />
     <ProjectReference Include="..\LMS.Shared\LMS.Shared.csproj" />
   </ItemGroup>
 

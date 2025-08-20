@@ -1,4 +1,5 @@
-﻿using LMS.Infrastructure.Data;
+﻿using Domain.Contracts.Repositories;
+using LMS.Infrastructure.Data;
 using LMS.Infrastructure.Repositories;
 using LMS.Presentation;
 using LMS.Services;
@@ -82,6 +83,7 @@ public static class ServiceExtensions
     public static void AddRepositories(this IServiceCollection services)
     {
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<IModuleActivityRepository, ModuleActivityRepository>();
     }
 
     public static void AddServiceLayer(this IServiceCollection services)
@@ -90,5 +92,6 @@ public static class ServiceExtensions
 
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped(provider => new Lazy<IAuthService>(() => provider.GetRequiredService<IAuthService>()));
+        services.AddScoped<IModuleActivityService, ModuleActivityService>();
     }
 }
