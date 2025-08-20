@@ -1,6 +1,7 @@
 ﻿using Domain.Contracts.Repositories;
 using Domain.Models.Entities;
 using LMS.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace LMS.Infrastructure.Repositories;
 public class CourseRepository : RepositoryBase<Course>, ICourseRepository
@@ -15,10 +16,10 @@ public class CourseRepository : RepositoryBase<Course>, ICourseRepository
         Create(course);
     }
 
-    public Task<IEnumerable<Course>> GetAllAsync(bool trackChanges = false)
+    public async Task<IEnumerable<Course>> GetAllAsync(bool trackChanges = false)
     {
         return await FindAll(trackChanges)
-            .OrderBy(g => g.)
+            .OrderBy(g => g.Name)
             .ToListAsync();
     }
 }
