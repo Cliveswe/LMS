@@ -23,6 +23,18 @@ public static class ApplicationBuilderExtensions
                 // Skip seeding if data is already present
                 return;
             }
+
+            try
+            {
+                var courses = SeedData.GenerateCourses(4);
+
+                db.AddRange(courses);
+                await db.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Could not seed database: {ex.Message}");
+            }
         }
     }
 }
