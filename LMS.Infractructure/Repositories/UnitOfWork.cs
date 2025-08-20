@@ -16,5 +16,5 @@ public class UnitOfWork : IUnitOfWork
     //Course repository
     public ICourseRepository Courses => courseRepository ??= new CourseRepository(context);
 
-    public async Task CompleteAsync() => await context.SaveChangesAsync();
+    public async Task<int> CompleteAsync() => await context.SaveChangesAsync();
 }

@@ -19,11 +19,14 @@ public class CourseService(IMapper mapper, IUnitOfWork unitOfWork) : ICourseServ
 
         // Add using repository
         unitOfWork.Courses.Add(course);
+        int changes = await unitOfWork.CompleteAsync();
 
-        // Save changes
-        unitOfWork.CompleteAsync().GetAwaiter().GetResult(); // synchronous call for now
+        if (changes == 0)
+        {
+            return new ApiSavedFailResponse("Failed to save the new course.");
+        }
 
-
+        return null;
     }
 
     public async Task<ApiBaseResponse> GetAllAsync()

@@ -37,3 +37,8 @@ public abstract class ApiNotFoundResponse : ApiBaseResponse
         Message = message;
     }
 }
+
+public class ApiSaveFailedResponse(string message)
+    : ApiBaseResponse(false, message, StatusCodes.Status500InternalServerError)
+{
+}
