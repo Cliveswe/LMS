@@ -16,7 +16,7 @@ public class ModuleRepository : RepositoryBase<Module>, IModuleRepository
     {
     }
 
-    public async Task<IEnumerable<Module>> GetModulesAsync(int courseId, bool trackChanges = false)
+    public async Task<IEnumerable<Module>> GetAllModulesAsync(int courseId, bool trackChanges = false)
     {
         return await FindByCondition(m => m.CourseId.Equals(courseId), trackChanges).ToListAsync();
     }
