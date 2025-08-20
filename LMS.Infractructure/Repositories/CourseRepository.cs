@@ -15,5 +15,10 @@ public class CourseRepository : RepositoryBase<Course>, ICourseRepository
         Create(course);
     }
 
-    //TODO: Create getAll to get all courses.
+    public Task<IEnumerable<Course>> GetAllAsync(bool trackChanges = false)
+    {
+        return await FindAll(trackChanges)
+            .OrderBy(g => g.)
+            .ToListAsync();
+    }
 }
