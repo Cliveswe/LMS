@@ -23,10 +23,11 @@ public class CourseService(IMapper mapper, IUnitOfWork unitOfWork) : ICourseServ
 
         if (changes == 0)
         {
-            return new ApiSavedFailResponse("Failed to save the new course.");
+            return new ApiFailedSaveResponse("Failed to save the new course.");
         }
+        CourseDto courseDto = mapper.Map<CourseDto>(courseCreateDto);
 
-        return null;
+        return new ApiOkResponse<CourseDto>(courseDto, "Course successfully created.");
     }
 
     public async Task<ApiBaseResponse> GetAllAsync()

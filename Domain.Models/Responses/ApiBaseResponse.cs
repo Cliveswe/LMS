@@ -1,12 +1,18 @@
 ﻿//Ignore Spelling: api
+using Microsoft.AspNetCore.Http;  // for StatusCodes
 namespace Domain.Models.Responses;
 public abstract class ApiBaseResponse
 {
     public bool Success { get; set; }
+    public string? Message { get; init; }
+    public int StatusCode { get; init; }
 
-    protected ApiBaseResponse(bool success)
+    protected ApiBaseResponse(bool success, string? message = null, int statusCode = 200)
     {
         Success = success;
+        //Support general feedback across all responses (not just NotFound).
+        Message = message;
+        StatusCode = statusCode;
     }
 
     public TResultType GetOkResult<TResultType>()
@@ -22,7 +28,7 @@ public abstract class ApiBaseResponse
 public sealed class ApiOkResponse<TResult> : ApiBaseResponse
 {
     public TResult Result { get; set; }
-    public ApiOkResponse(TResult result) : base(true)
+    public ApiOkResponse(TResult result, string? message = null) : base(true, message)
     {
         Result = result;
     }
@@ -38,7 +44,7 @@ public abstract class ApiNotFoundResponse : ApiBaseResponse
     }
 }
 
-public class ApiSaveFailedResponse(string message)
+public class ApiFailedSaveResponse(string message)
     : ApiBaseResponse(false, message, StatusCodes.Status500InternalServerError)
 {
 }
