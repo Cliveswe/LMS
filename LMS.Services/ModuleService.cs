@@ -2,6 +2,7 @@
 using Domain.Contracts.Repositories;
 using Domain.Models.Exceptions;
 using LMS.Shared.DTOs;
+using Service.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;

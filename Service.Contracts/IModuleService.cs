@@ -1,6 +1,6 @@
 ﻿using LMS.Shared.DTOs;
 
-namespace LMS.Services;
+namespace Service.Contracts;
 
 public interface IModuleService
 {

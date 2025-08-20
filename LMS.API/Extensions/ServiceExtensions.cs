@@ -94,6 +94,10 @@ public static class ServiceExtensions
 
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped(provider => new Lazy<IAuthService>(() => provider.GetRequiredService<IAuthService>()));
+
+        // Module service
+        services.AddScoped<IModuleService, ModuleService>();
+        services.AddLazy<IModuleService>();
     }
 }
 
