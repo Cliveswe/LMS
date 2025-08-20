@@ -23,5 +23,13 @@ public class CourseService(IMapper mapper, IUnitOfWork unitOfWork) : ICourseServ
         unitOfWork.CompleteAsync().GetAwaiter().GetResult(); // synchronous call for now
     }
 
-    //TODO: Create service to get all courses.
+    public async Task<IEnumerable<CoursesDto>> GetAllAsync()
+    {
+        IEnumerable<Course> course = await unitOfWork.Courses.GetAllAsync();
+
+        var result = mapper.Map<CourseDto>(course);
+
+        return result;
+    }
+
 }
