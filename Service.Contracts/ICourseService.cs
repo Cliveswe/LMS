@@ -6,7 +6,7 @@ namespace Service.Contracts;
 public interface ICourseService
 {
 
-    void AddCourse(CourseCreateDto courseCreateDto);
+    Task<ApiBaseResponse> AddCourseAsync(CourseCreateDto courseCreateDto);
 
     Task<ApiBaseResponse> GetAllAsync();
 }

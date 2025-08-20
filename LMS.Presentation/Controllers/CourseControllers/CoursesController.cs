@@ -16,7 +16,7 @@ public class CoursesController(IServiceManager serviceManager) : Controller
     public IActionResult CreateCourse(CourseCreateDto courseCreateDto)
     {
 
-        serviceManager.CourseService.AddCourse(courseCreateDto);
+        serviceManager.CourseService.AddCourseAsync(courseCreateDto);
 
         return Ok();
     }

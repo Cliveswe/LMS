@@ -9,19 +9,21 @@ using Service.Contracts;
 namespace LMS.Services;
 public class CourseService(IMapper mapper, IUnitOfWork unitOfWork) : ICourseService
 {
-    public void AddCourse(CourseCreateDto courseCreateDto)
+    public async Task<ApiBaseResponse> AddCourseAsync(CourseCreateDto courseCreateDto)
     {
         if (courseCreateDto is null)
             throw new ArgumentNullException(nameof(courseCreateDto));
 
         // Map DTO -> Entity
-        var course = mapper.Map<Course>(courseCreateDto);
+        Course course = mapper.Map<Course>(courseCreateDto);
 
         // Add using repository
         unitOfWork.Courses.Add(course);
 
         // Save changes
         unitOfWork.CompleteAsync().GetAwaiter().GetResult(); // synchronous call for now
+
+
     }
 
     public async Task<ApiBaseResponse> GetAllAsync()
