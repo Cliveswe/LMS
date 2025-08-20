@@ -1,0 +1,37 @@
+﻿.UserForm {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto; /* Centers horizontally */
+    padding: 20px;
+    max-width: 600px; /* Prevent overly wide forms on smaller screens */
+}
+
+@media (min-width: 1366px) {
+    .UserForm {
+        width: 50%; /* or use 75% if preferred */
+    }
+}
+
+.form-group {
+    width: 100%; /* Ensure form-group respects form's width */
+    margin-bottom: 15px;
+}
+
+.form-control {
+    width: 100%;
+    max-width: 100%; /* Prevent stretching beyond parent */
+    box-sizing: border-box;
+}
+
+/* Style validation messages */
+.validation-message {
+    color: #dc3545; /* Bootstrap danger color */
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+/* Ensure validation works with floating labels */
+.form-floating > .form-control:not(:placeholder-shown):invalid ~ label,
+.form-floating > .form-select:invalid ~ label {
+    color: #dc3545; /* Match Bootstrap's invalid state */
+}

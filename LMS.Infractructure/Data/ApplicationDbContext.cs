@@ -19,6 +19,7 @@ namespace LMS.Infrastructure.Data
         {
             base.OnModelCreating(builder);
             builder.ApplyConfiguration(new ApplicationUserConfigurations());
+            builder.Entity<ApplicationUser>().ToTable("ApplicationUser");
         }
 
         public DbSet<Course> Courses { get; set; } = default!;

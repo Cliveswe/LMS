@@ -4,14 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace LMS.Infrastructure.Repositories;
-public abstract class RepositoryBase<T> : IRepositoryBase<T>, IInternalRepositoryBase<T> where T : class //Do Entitybase
+public abstract class RepositoryBase<T>(ApplicationDbContext context) : IRepositoryBase<T>, IInternalRepositoryBase<T> where T : class //Do Entitybase
 {
-    protected DbSet<T> DbSet { get; }
-
-    public RepositoryBase(ApplicationDbContext context)
-    {
-        DbSet = context.Set<T>();
-    }
+    protected DbSet<T> DbSet { get; } = context.Set<T>();
 
     public IQueryable<T> FindAll(bool trackChanges = false) =>
         !trackChanges ? DbSet.AsNoTracking() :
