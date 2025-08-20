@@ -23,6 +23,11 @@ namespace LMS.Presentation.Controllers
         {
             await sm.ModuleActivityService.PatchModuleActivityAsync(id, patchDoc);
         }
-
+        
+        [HttpGet("module/{id:int}")]
+        public IEnumerable<ModuleActivity> GetActivitiesByModule(int id)
+        {
+            return sm.ModuleActivityService.GetActivitiesByModule(id);
+        }
     }
 }
