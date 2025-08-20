@@ -7,5 +7,5 @@ public interface ICourseService
 
     void AddCourse(CourseCreateDto courseCreateDto);
 
-    Task<IEnumerable<CoursesDto>> GetAllAsync();
+    Task<IEnumerable<CourseDto>> GetAllAsync();
 }

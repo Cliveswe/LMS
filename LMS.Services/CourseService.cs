@@ -23,11 +23,11 @@ public class CourseService(IMapper mapper, IUnitOfWork unitOfWork) : ICourseServ
         unitOfWork.CompleteAsync().GetAwaiter().GetResult(); // synchronous call for now
     }
 
-    public async Task<IEnumerable<CoursesDto>> GetAllAsync()
+    public async Task<IEnumerable<CourseDto>> GetAllAsync()
     {
         IEnumerable<Course> course = await unitOfWork.Courses.GetAllAsync();
 
-        var result = mapper.Map<CourseDto>(course);
+        IEnumerable<CourseDto> result = mapper.Map<IEnumerable<CourseDto>>(course);
 
         return result;
     }
