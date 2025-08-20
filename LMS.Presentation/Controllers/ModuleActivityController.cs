@@ -1,5 +1,6 @@
 ﻿using Domain.Models.Entities;
 using LMS.Shared.DTOs.ModuleActivityDtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +13,7 @@ namespace LMS.Presentation.Controllers
     public class ModuleActivityController(IServiceManager sm) : ControllerBase
     {
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> CreateActivityAsync(CreateModuleActivityDto dto)
         {
             await sm.ModuleActivityService.CreateActivityAsync(dto);
@@ -19,10 +21,17 @@ namespace LMS.Presentation.Controllers
         }
 
         [HttpPatch("{id:int}")]
+        [Authorize]
         public async Task PatchActivityAsync(int id, JsonPatchDocument<PatchModuleActivityDto> patchDoc)
         {
             await sm.ModuleActivityService.PatchModuleActivityAsync(id, patchDoc);
         }
-
+        
+        [HttpGet("module/{id:int}")]
+        [Authorize]
+        public IEnumerable<ModuleActivity> GetActivitiesByModule(int id)
+        {
+            return sm.ModuleActivityService.GetActivitiesByModule(id);
+        }
     }
 }

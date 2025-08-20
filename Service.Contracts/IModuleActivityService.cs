@@ -1,4 +1,5 @@
-﻿using LMS.Shared.DTOs.ModuleActivityDtos;
+﻿using Domain.Models.Entities;
+using LMS.Shared.DTOs.ModuleActivityDtos;
 using Microsoft.AspNetCore.JsonPatch;
 
 namespace Service.Contracts
@@ -7,5 +8,6 @@ namespace Service.Contracts
     {
         Task CreateActivityAsync(CreateModuleActivityDto newModuleActivityDto);
         Task PatchModuleActivityAsync(int id, JsonPatchDocument<PatchModuleActivityDto> patchDoc);
+        IEnumerable<ModuleActivity> GetActivitiesByModule(int moduleId);
     }
 }

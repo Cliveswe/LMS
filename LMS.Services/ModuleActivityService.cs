@@ -1,14 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Domain.Contracts.Repositories;
 using Domain.Models.Entities;
 using LMS.Shared.DTOs.ModuleActivityDtos;
 using Microsoft.AspNetCore.JsonPatch;
 using Service.Contracts;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace LMS.Services
 {
@@ -36,6 +37,11 @@ namespace LMS.Services
 
             mapper.Map(dto, moduleActivityToPatch);
             await uow.CompleteAsync();
+        }
+
+        public IEnumerable<ModuleActivity> GetActivitiesByModule(int moduleId)
+        {
+            return uow.ModuleActivityRepository.FindByCondition( a => a.ModuleId == moduleId, false);
         }
 
         //public async Task<IEnumerable<ModuleActivity>> GetModuleActivitiesAsync(Guid moduleId)
