@@ -2,6 +2,7 @@
 using AutoMapper;
 using Domain.Contracts.Repositories;
 using Domain.Models.Entities;
+using Domain.Models.Responses;
 using LMS.Shared.DTOs.CourseDtos;
 using Service.Contracts;
 
@@ -23,13 +24,13 @@ public class CourseService(IMapper mapper, IUnitOfWork unitOfWork) : ICourseServ
         unitOfWork.CompleteAsync().GetAwaiter().GetResult(); // synchronous call for now
     }
 
-    public async Task<IEnumerable<CourseDto>> GetAllAsync()
+    public async Task<ApiBaseResponse> GetAllAsync()
     {
         IEnumerable<Course> course = await unitOfWork.Courses.GetAllAsync();
 
-        IEnumerable<CourseDto> result = mapper.Map<IEnumerable<CourseDto>>(course);
+        IEnumerable<CourseDto> courseDto = mapper.Map<IEnumerable<CourseDto>>(course);
 
-        return result;
+        return new ApiOkResponse<IEnumerable<CourseDto>>(courseDto);
     }
 
 }
