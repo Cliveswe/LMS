@@ -4,6 +4,7 @@ using LMS.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LMS.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250820075109_Added course ID in module entity")]
+    partial class AddedcourseIDinmoduleentity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,6 +38,21 @@ namespace LMS.Infrastructure.Migrations
                     b.HasIndex("UsersId");
 
                     b.ToTable("UserCourses", (string)null);
+                });
+
+            modelBuilder.Entity("CourseModule", b =>
+                {
+                    b.Property<int>("CoursesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ModulesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CoursesId", "ModulesId");
+
+                    b.HasIndex("ModulesId");
+
+                    b.ToTable("CourseModule");
                 });
 
             modelBuilder.Entity("Domain.Models.Entities.ApplicationUser", b =>
@@ -202,8 +220,6 @@ namespace LMS.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CourseId");
 
                     b.ToTable("Modules");
                 });
@@ -392,15 +408,19 @@ namespace LMS.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Domain.Models.Entities.Module", b =>
+            modelBuilder.Entity("CourseModule", b =>
                 {
-                    b.HasOne("Domain.Models.Entities.Course", "Course")
-                        .WithMany("Modules")
-                        .HasForeignKey("CourseId")
+                    b.HasOne("Domain.Models.Entities.Course", null)
+                        .WithMany()
+                        .HasForeignKey("CoursesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Course");
+                    b.HasOne("Domain.Models.Entities.Module", null)
+                        .WithMany()
+                        .HasForeignKey("ModulesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Domain.Models.Entities.ModuleActivity", b =>
@@ -461,11 +481,6 @@ namespace LMS.Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Domain.Models.Entities.Course", b =>
-                {
-                    b.Navigation("Modules");
                 });
 
             modelBuilder.Entity("Domain.Models.Entities.Module", b =>
