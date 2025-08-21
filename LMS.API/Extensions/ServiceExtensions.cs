@@ -82,10 +82,7 @@ public static class ServiceExtensions
     public static void AddRepositories(this IServiceCollection services)
     {
         services.AddScoped<IUnitOfWork, UnitOfWork>();
-
-        // Module repository
         services.AddScoped<IModuleRepository, ModuleRepository>();
-        services.AddLazy<IModuleRepository>();
     }
 
     public static void AddServiceLayer(this IServiceCollection services)
@@ -97,21 +94,6 @@ public static class ServiceExtensions
 
         // Module service
         services.AddScoped<IModuleService, ModuleService>();
-        services.AddLazy<IModuleService>();
-    }
-}
-
-
-
-// Set up support for Lazy<T> so services can be injected as Lazy objects
-public static class ServiceCollectionExtensions
-{
-    // Adds a Lazy version of a service to the dependency injection container
-    public static IServiceCollection AddLazy<TService>(this IServiceCollection services) where TService : class
-    {
-        // Register Lazy<TService> as a scoped service.
-        // The actual TService will only be created when the Lazy.Value is accessed.
-        return services.AddScoped(provider =>
-            new Lazy<TService>(() => provider.GetRequiredService<TService>()));
+        services.AddScoped(provider => new Lazy<IModuleService>(() => provider.GetRequiredService<IModuleService>()));
     }
 }

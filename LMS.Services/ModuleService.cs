@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Domain.Contracts.Repositories;
 using Domain.Models.Exceptions;
-using LMS.Shared.DTOs;
+using LMS.Shared.DTOs.ModuleDtos;
 using Service.Contracts;
 using System;
 using System.Collections.Generic;
@@ -24,7 +24,7 @@ public class ModuleService : IModuleService
 
     public async Task<IEnumerable<ModuleDto>> GetAllModulesAsync(int courseId)
     {
-        var modules = await _unitOfWork.ModuleRepository.GetAllModulesAsync(courseId);
+        var modules = await _unitOfWork.Modules.GetAllModulesAsync(courseId);
 
         if (!modules.Any())
         {
@@ -34,13 +34,13 @@ public class ModuleService : IModuleService
         return _mapper.Map<IEnumerable<ModuleDto>>(modules);
     }
 
-    public async Task<ModuleDto> GetModuleByIdAsync(int moduleId)
+    public async Task<ModuleDto> GetModuleByIdAsync(int courseId, int moduleId)
     {
-        var module = await _unitOfWork.ModuleRepository.GetModuleByIdAsync(moduleId);
+        var module = await _unitOfWork.Modules.GetModuleByIdAsync(courseId, moduleId);
 
         if (module == null)
         {
-            throw new NotFoundException($"Module with ID '{moduleId}' not found.");
+            throw new NotFoundException($"Module with ID '{moduleId}' not found in course with ID '{courseId}'.");
         }
 
         return _mapper.Map<ModuleDto>(module);

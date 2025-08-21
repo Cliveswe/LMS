@@ -6,14 +6,14 @@ public class UnitOfWork : IUnitOfWork
 {
     private readonly ApplicationDbContext context;
 
-    private readonly Lazy<IModuleRepository> moduleRepository;
-    public IModuleRepository ModuleRepository => moduleRepository.Value;
+    private IModuleRepository moduleRepository;
 
-    public UnitOfWork(ApplicationDbContext context, Lazy<IModuleRepository> modulerepository)
+    public UnitOfWork(ApplicationDbContext context)
     {
         this.context = context ?? throw new ArgumentNullException(nameof(context));
-        moduleRepository = modulerepository ?? throw new ArgumentNullException(nameof(modulerepository));
     }
+
+    public IModuleRepository Modules => moduleRepository ??= new ModuleRepository(context);
 
     public async Task CompleteAsync() => await context.SaveChangesAsync();
 }

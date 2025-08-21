@@ -2,6 +2,6 @@
 
 public interface IUnitOfWork
 {
-    IModuleRepository ModuleRepository { get; }
+    IModuleRepository Modules { get; }
     Task CompleteAsync();
 }

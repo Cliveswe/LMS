@@ -1,9 +1,9 @@
-﻿using LMS.Shared.DTOs;
+﻿using LMS.Shared.DTOs.ModuleDtos;
 
 namespace Service.Contracts;
 
 public interface IModuleService
 {
     Task<IEnumerable<ModuleDto>> GetAllModulesAsync(int courseId);
-    Task<ModuleDto> GetModuleByIdAsync(int moduleId);
+    Task<ModuleDto> GetModuleByIdAsync(int courseId, int moduleId);
 }

@@ -21,8 +21,8 @@ public class ModuleRepository : RepositoryBase<Module>, IModuleRepository
         return await FindByCondition(m => m.CourseId.Equals(courseId), trackChanges).ToListAsync();
     }
 
-    public async Task<Module?> GetModuleByIdAsync(int moduleId, bool trackChanges = false)
+    public async Task<Module?> GetModuleByIdAsync(int courseId, int moduleId, bool trackChanges = false)
     {
-        return await FindByCondition(m => m.Id.Equals(moduleId), trackChanges).FirstOrDefaultAsync();
+        return await FindByCondition(m => m.CourseId.Equals(courseId) && m.Id.Equals(moduleId), trackChanges).FirstOrDefaultAsync();
     }
 }
