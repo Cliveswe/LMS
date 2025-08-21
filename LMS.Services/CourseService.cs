@@ -11,14 +11,19 @@ public class CourseService(IMapper mapper, IUnitOfWork unitOfWork) : ICourseServ
 {
     public async Task<ApiBaseResponse> AddCourseAsync(CourseCreateDto courseCreateDto)
     {
-
-        var existingCourseEntity = await unitOfWork.Courses
-
+        //Does the course already exist.
+        bool existingCourseEntity = await unitOfWork
+            .CourseRepository
+            .CourseExistsByNameAndStartDateAsync(courseCreateDto.CourseName, courseCreateDto.CourseStartDate);
+        if (existingCourseEntity)
+        {
+            return new ApiAlreadyExistsResponse($"A course with the name {courseCreateDto.CourseName} with start date {courseCreateDto.CourseStartDate} already exists.");
+        }
         // Map DTO -> Entity
         Course course = mapper.Map<Course>(courseCreateDto);
 
         // Add using repository
-        unitOfWork.Courses.Add(course);
+        unitOfWork.CourseRepository.Add(course);
         int changes = await unitOfWork.CompleteAsync();
 
         if (changes == 0)
