@@ -15,8 +15,9 @@ namespace LMS.Services
 {
     public class ModuleActivityService(IUnitOfWork uow, IMapper mapper) : IModuleActivityService
     {
-        public async Task CreateActivityAsync(CreateModuleActivityDto newModuleActivityDto)
+        public async Task CreateActivityAsync(int moduleId, CreateModuleActivityDto newModuleActivityDto)
         {
+            newModuleActivityDto.ModuleId = moduleId;
             var newModuleActivity = mapper.Map<ModuleActivity>(newModuleActivityDto);
             uow.ModuleActivityRepository.Create(newModuleActivity);
             await uow.CompleteAsync();

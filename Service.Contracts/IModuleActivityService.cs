@@ -6,7 +6,7 @@ namespace Service.Contracts
 {
     public interface IModuleActivityService
     {
-        Task CreateActivityAsync(CreateModuleActivityDto newModuleActivityDto);
+        Task CreateActivityAsync(int moduleId, CreateModuleActivityDto newModuleActivityDto);
         Task PatchModuleActivityAsync(int id, JsonPatchDocument<PatchModuleActivityDto> patchDoc);
         IEnumerable<ModuleActivity> GetActivitiesByModule(int moduleId);
     }

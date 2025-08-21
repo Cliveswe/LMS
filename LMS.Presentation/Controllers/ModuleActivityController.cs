@@ -8,15 +8,15 @@ using Service.Contracts;
 
 namespace LMS.Presentation.Controllers
 {
-    [Route("/api/module-activity")]
+    [Route("/api/courses/modules/{moduleId:int}/module-activity")]
     [ApiController]
     public class ModuleActivityController(IServiceManager sm) : ControllerBase
     {
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> CreateActivityAsync(CreateModuleActivityDto dto)
+        public async Task<IActionResult> CreateActivityAsync(int moduleId, CreateModuleActivityDto dto)
         {
-            await sm.ModuleActivityService.CreateActivityAsync(dto);
+            await sm.ModuleActivityService.CreateActivityAsync(moduleId, dto);
             return NoContent();
         }
 
@@ -27,11 +27,11 @@ namespace LMS.Presentation.Controllers
             await sm.ModuleActivityService.PatchModuleActivityAsync(id, patchDoc);
         }
         
-        [HttpGet("module/{id:int}")]
+        [HttpGet]
         [Authorize]
-        public IEnumerable<ModuleActivity> GetActivitiesByModule(int id)
+        public IEnumerable<ModuleActivity> GetActivitiesByModule(int moduleId)
         {
-            return sm.ModuleActivityService.GetActivitiesByModule(id);
+            return sm.ModuleActivityService.GetActivitiesByModule(moduleId);
         }
     }
 }
