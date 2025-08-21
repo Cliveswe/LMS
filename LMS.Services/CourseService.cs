@@ -11,33 +11,26 @@ public class CourseService(IMapper mapper, IUnitOfWork unitOfWork) : ICourseServ
 {
     public async Task<ApiBaseResponse> AddCourseAsync(CourseCreateDto courseCreateDto)
     {
-        //Does the course already exist.
-        bool existingCourseEntity = await unitOfWork
-            .CourseRepository
-            .CourseExistsByNameAndStartDateAsync(courseCreateDto.CourseName, courseCreateDto.CourseStartDate);
-        if (existingCourseEntity)
-        {
-            return new ApiAlreadyExistsResponse($"A course with the name {courseCreateDto.CourseName} with start date {courseCreateDto.CourseStartDate} already exists.");
-        }
+
         // Map DTO -> Entity
-        Course course = mapper.Map<Course>(courseCreateDto);
+        Course courseEntity = mapper.Map<Course>(courseCreateDto);
 
         // Add using repository
-        unitOfWork.CourseRepository.Add(course);
+        unitOfWork.CourseRepository.Add(courseEntity);
         int changes = await unitOfWork.CompleteAsync();
 
         if (changes == 0)
         {
             return new ApiFailedSaveResponse("Failed to save the new course.");
         }
-        CourseDto courseDto = mapper.Map<CourseDto>(courseCreateDto);
+        CourseDto courseDto = mapper.Map<CourseDto>(courseEntity);
 
         return new ApiOkResponse<CourseDto>(courseDto, "Course successfully created.");
     }
 
     public async Task<ApiBaseResponse> GetAllAsync()
     {
-        IEnumerable<Course> course = await unitOfWork.Courses.GetAllAsync();
+        IEnumerable<Course> course = await unitOfWork.CourseRepository.GetAllAsync();
 
         IEnumerable<CourseDto> courseDto = mapper.Map<IEnumerable<CourseDto>>(course);
 
@@ -48,7 +41,7 @@ public class CourseService(IMapper mapper, IUnitOfWork unitOfWork) : ICourseServ
     {
         // Checks existence of a Course by title and start date.
 
-        var entityExists = await unitOfWork.Courses.CourseExistsByNameAndStartDateAsync(name, startDate);
+        var entityExists = await unitOfWork.CourseRepository.CourseExistsByNameAndStartDateAsync(name, startDate);
 
         return entityExists
             ? new ApiOkResponse<bool>(entityExists)
