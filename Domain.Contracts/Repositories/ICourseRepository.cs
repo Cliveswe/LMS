@@ -7,4 +7,6 @@ public interface ICourseRepository
     void Add(Course course);
 
     Task<IEnumerable<Course>> GetAllAsync(bool trackChanges = false);
+
+    Task<bool> CourseExistsByNameAndStartDateAsync(string name, DateTime startDate);
 }

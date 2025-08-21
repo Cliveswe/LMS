@@ -39,4 +39,14 @@ public class CourseService(IMapper mapper, IUnitOfWork unitOfWork) : ICourseServ
         return new ApiOkResponse<IEnumerable<CourseDto>>(courseDto);
     }
 
+    public async Task<ApiBaseResponse> CourseExistsAsync(string name, DateTime startDate)
+    {
+        // Checks existence of a Course by title and start date.
+
+        var entityExists = await unitOfWork.Courses.CourseExistsByNameAndStartDateAsync(name, startDate);
+
+        return entityExists
+            ? new ApiOkResponse<bool>(entityExists)
+            : new ApiConcreteNotFoundResponse($"Course {name} with start date {startDate} does not exists.");
+    }
 }

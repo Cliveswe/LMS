@@ -22,4 +22,17 @@ public class CourseRepository : RepositoryBase<Course>, ICourseRepository
             .OrderBy(g => g.Name)
             .ToListAsync();
     }
+
+    public Task<bool> CourseExistsByNameAndStartDateAsync(string name, DateTime startDate)
+    {
+        var startOfDay = startDate.Date;
+        //Local variable used for the date range comparison. It does not require any schema change.
+        var endOfDay = startOfDay.AddDays(1);
+
+        return FindByCondition(c =>
+            c.Name == name &&
+            c.StartDate >= startOfDay && c.StartDate < endOfDay,
+            false
+        ).AnyAsync();
+    }
 }

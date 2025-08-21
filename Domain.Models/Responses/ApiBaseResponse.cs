@@ -34,15 +34,16 @@ public sealed class ApiOkResponse<TResult> : ApiBaseResponse
     }
 }
 
-public abstract class ApiNotFoundResponse : ApiBaseResponse
+// Abstract NotFound response
+public abstract class ApiNotFoundResponse(string message)
+    : ApiBaseResponse(false, message, StatusCodes.Status404NotFound)
 {
-    public string Message { get; }
-
-    protected ApiNotFoundResponse(string message) : base(false)
-    {
-        Message = message;
-    }
 }
+
+// Concrete NotFound
+public class ApiConcreteNotFoundResponse(string message) : ApiNotFoundResponse(message) { }
+
+
 
 public class ApiFailedSaveResponse(string message)
     : ApiBaseResponse(false, message, StatusCodes.Status500InternalServerError)
