@@ -1,4 +1,5 @@
-﻿using Service.Contracts;
+﻿//Ignore Spelling: auth
+using Service.Contracts;
 
 namespace LMS.Services;
 

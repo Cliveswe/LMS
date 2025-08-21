@@ -15,7 +15,7 @@ public class CoursesController(IServiceManager serviceManager) : Controller
     [Consumes("application/json")] // Correct MIME type for POSTing a DTO
     public IActionResult CreateCourse(CourseCreateDto courseCreateDto)
     {
-
+        var t = serviceManager.CourseService.CourseExistsAsync(courseCreateDto.CourseName, courseCreateDto.CourseStartDate);
 
         Task<Domain.Models.Responses.ApiBaseResponse> res = serviceManager.CourseService.AddCourseAsync(courseCreateDto);
 
