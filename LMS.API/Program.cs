@@ -1,6 +1,8 @@
 using LMS.API.Extensions;
 using LMS.API.Services;
 using LMS.Infrastructure.Data;
+using LMS.Infrastructure.Repositories;
+using LMS.Services;
 
 namespace LMS.API;
 
@@ -15,6 +17,7 @@ public class Program
 
         builder.Services.AddRepositories();
         builder.Services.AddServiceLayer();
+        builder.Services.AddUserLayer();
 
         builder.Services.ConfigureAuthentication(builder.Configuration);
         builder.Services.ConfigureIdentity();
@@ -23,10 +26,8 @@ public class Program
         builder.Services.AddAutoMapper(cfg => cfg.AddProfile<MapperProfile>());
         builder.Services.ConfigureCors();
         builder.Services.ConfigureOpenApi();
-       
 
         var app = builder.Build();
-
 
         // Configure the HTTP request pipeline.
         app.ConfigureExceptionHandler();

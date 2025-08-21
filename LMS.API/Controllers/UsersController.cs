@@ -1,31 +1,34 @@
-﻿using LMS.Blazor.Client.Models;
-using Microsoft.AspNetCore.Identity;
+﻿using LMS.Shared.DTOs.UserDtos;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LMS.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class UsersController(UserManager<ApplicationUser> userManager) : ControllerBase
+public class UsersController(IServiceManager serviceManager) : ControllerBase
 {
     [HttpGet("{id}")]
-    public async Task<ActionResult<UserFormModel>> GetUser(string id)
+    public async Task<ActionResult<UserDto>> GetAsync(string id)
     {
-        var user = await userManager.FindByIdAsync(id);
-        if (user is null)
-        {
-            return NotFound();
-        }
+        var user = await serviceManager.UserService.GetByIdAsync(id);
+        return user is null ? NotFound() : Ok(user);
+    }
 
-        UserFormModel userModel = new()
-        {
-            Id = user.Id,
-            FirstName = user.FirstName,
-            LastName = user.LastName,
-            Email = user.Email,
-            Role = user.Role
-        };
+    [HttpPost]
+    public async Task<ActionResult<UserDto>> PostAsync(UserDto userDto)
+    {
+        var user = await serviceManager.UserService.PostAsync(userDto);
+        return CreatedAtAction("GetUser", new { User = user }, user);
+    }
 
-        return Ok(userModel);
+    [HttpPatch("{id}")]
+    public async Task<ActionResult<UserDto>> PatchAsync(
+        string id,
+        [FromBody] JsonPatchDocument<UserDto> patchDoc)
+    {
+        if (patchDoc is null) { return BadRequest(); }
+        var user = await serviceManager.UserService.PatchAsync(id, patchDoc);
+        return Ok(user);
     }
 }

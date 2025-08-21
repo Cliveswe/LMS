@@ -1,15 +1,16 @@
 ﻿@page "/user/create"
 @page "/user/edit/{Id}"
 
+@rendermode InteractiveServer
+
 @inject IHttpClientFactory HttpClientFactory
 @inject NavigationManager Navigation
 
 <div class="UserForm">
     <h1>@(string.IsNullOrEmpty(Id) ? "Create" : "Edit") User</h1>
 
-    <EditForm Model="@UserModel" OnValidSubmit="HandleSubmit">
+    <EditForm Model="@UserModel" FormName="UserForm" OnSubmit="HandleSubmit">
         <DataAnnotationsValidator />
-        <ValidationSummary />
 
         <div class="row g-2">
             <div class="col-md">
@@ -55,15 +56,22 @@
 
         <!-- Placeholder for Courses selection (e.g., multi-select dropdown) -->
         <div class="form-group">
-            <label for="courses">Courses</label>
-            <InputSelect id="courses" class="form-control" multiple @bind-Value="UserModel.SelectedCourseIds">
+            <label for="courses">Courses (optional)</label>
+            <select id="courses" class="form-control" multiple @onchange="HandleCourseSelectionChange">
                 @foreach (var course in AvailableCourses)
                 {
-                    <option value="@course.Id">@course.Name</option>
+                    <option value="@course.Id" selected="@UserModel.SelectedCourseIds.Contains(course.Id)">@course.Name</option>
                 }
-            </InputSelect>
+            </select>
         </div>
 
-        <button type="submit" class="btn btn-success">Create</button>
+        @if (!string.IsNullOrEmpty(Id))
+        {
+            <button type="submit" class="btn btn-success">Save</button>
+        }
+        else
+        {
+            <button type="submit" class="btn btn-success">Create</button>
+        }
     </EditForm>
 </div>

@@ -76,7 +76,9 @@ public static class ServiceExtensions
     public static void ConfigureSql(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("ApplicationDbContext") ?? throw new InvalidOperationException("Connection string 'ApplicationDbContext' not found.")));
+                options.UseSqlServer(configuration.GetConnectionString("ApplicationDbContext")
+                ?? throw new InvalidOperationException("Connection string 'ApplicationDbContext' not found."), 
+                b => b.MigrationsAssembly("LMS.API")));
     }
 
     public static void AddRepositories(this IServiceCollection services)
@@ -90,5 +92,12 @@ public static class ServiceExtensions
 
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped(provider => new Lazy<IAuthService>(() => provider.GetRequiredService<IAuthService>()));
+    }
+
+    public static void AddUserLayer(this IServiceCollection services)
+    {
+        services.AddScoped<IUserService, UserService>();
+        services.AddScoped(provider => new Lazy<IUserService>(() => provider.GetRequiredService<IUserService>()));
+        services.AddScoped<IUserRepository,  UserRepository>();
     }
 }
