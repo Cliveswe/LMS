@@ -11,8 +11,8 @@ public class CourseService(IMapper mapper, IUnitOfWork unitOfWork) : ICourseServ
 {
     public async Task<ApiBaseResponse> AddCourseAsync(CourseCreateDto courseCreateDto)
     {
-        if (courseCreateDto is null)
-            throw new ArgumentNullException(nameof(courseCreateDto));
+
+        var existingCourseEntity = await unitOfWork.Courses
 
         // Map DTO -> Entity
         Course course = mapper.Map<Course>(courseCreateDto);
