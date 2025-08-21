@@ -10,7 +10,7 @@ namespace LMS.Presentation.Controllers
 {
     [Route("/api/courses/modules/{moduleId:int}/module-activity")]
     [ApiController]
-    public class ModuleActivityController(IServiceManager sm) : ControllerBase
+    public class ModuleActivityController(IServiceManager sm) : ApiControllerBase
     {
         [HttpPost]
         [Authorize]
