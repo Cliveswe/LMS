@@ -8,13 +8,13 @@ public class CourseDto
 
     [Required(ErrorMessage = "CourseName is a required field.")]
     [JsonPropertyName("CourseName")]
-    public string CourseName { get; set; }
+    public required string CourseName { get; set; }
 
     [Required(ErrorMessage = "CourseDescription is a required field.")]
     [JsonPropertyName("CourseDescription")]
-    public string CourseDescription { get; set; }
+    public required string CourseDescription { get; set; }
 
     [Required(ErrorMessage = "CourseStartDate is a required field.")]
     [JsonPropertyName("CourseStartDate ")]
-    public DateTime CourseStartDate { get; set; }
+    public required DateTime CourseStartDate { get; set; }
 }
