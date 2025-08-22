@@ -52,3 +52,7 @@ public class ApiAlreadyExistsResponse(string message)
     : ApiBaseResponse(false, message, StatusCodes.Status409Conflict)
 {
 }
+
+public class ApiCreatedResponse(string message)
+    : ApiBaseResponse(true, message, StatusCodes.Status201Created)
+{ }
