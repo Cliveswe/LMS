@@ -23,6 +23,12 @@ public class CourseRepository : RepositoryBase<Course>, ICourseRepository
             .ToListAsync();
     }
 
+    public async Task<Course?> FindByID(int courseId, bool trackChanges = false)
+    {
+        return await FindByCondition(c => c.Id == courseId, trackChanges)
+            .FirstOrDefaultAsync();
+    }
+
     public Task<bool> CourseExistsByNameAndStartDateAsync(string name, DateTime startDate)
     {
         var startOfDay = startDate.Date;
