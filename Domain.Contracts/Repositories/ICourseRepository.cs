@@ -8,5 +8,7 @@ public interface ICourseRepository
 
     Task<IEnumerable<Course>> GetAllAsync(bool trackChanges = false);
 
+    Task<Course?> FindByID(int courseId, bool trackChanges = false);
+
     Task<bool> CourseExistsByNameAndStartDateAsync(string name, DateTime startDate);
 }
