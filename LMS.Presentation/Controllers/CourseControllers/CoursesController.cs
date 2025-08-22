@@ -1,12 +1,13 @@
 ﻿//Ignore Spelling: api dto json
 using Domain.Models.Responses;
 using LMS.Shared.DTOs.CourseDtos;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 
 namespace LMS.Presentation.Controllers.CourseControllers;
 
-[Route("api/course")]
+[Route("api/courses")]
 [ApiController]
 [Produces("application/json")] // Ensures all responses are documented as JSON
 public class CoursesController(IServiceManager serviceManager) : ApiControllerBase
@@ -33,10 +34,20 @@ public class CoursesController(IServiceManager serviceManager) : ApiControllerBa
     }
 
     [HttpGet]
+    [ProducesResponseType(typeof(List<CourseDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiBaseResponse), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ApiBaseResponse), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<IEnumerable<CourseDto>>> GetAllCourses()
     {
         ApiBaseResponse courseGetAllServiceResponse = await serviceManager.CourseService.GetAllAsync();
 
+        //If no courses are found, return a 404 Not Found.
+        if (!courseGetAllServiceResponse.Success)
+        {
+            return ProcessError(courseGetAllServiceResponse);
+        }
+
+        //Return the results with 200 Ok.
         return HandleResponse<IEnumerable<CourseDto>>(courseGetAllServiceResponse);
     }
 }
