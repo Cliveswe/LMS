@@ -42,7 +42,7 @@ public class CourseService(IMapper mapper, IUnitOfWork unitOfWork) : ICourseServ
     {
         // Checks existence of a Course by title and start date.
 
-        var entityExists = await unitOfWork.CourseRepository.CourseExistsByNameAndStartDateAsync(name, startDate);
+        bool entityExists = await unitOfWork.CourseRepository.CourseExistsByNameAndStartDateAsync(name, startDate);
 
         return entityExists
             ? new ApiOkResponse<bool>(entityExists)
