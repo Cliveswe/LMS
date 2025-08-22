@@ -25,7 +25,8 @@ public class CourseService(IMapper mapper, IUnitOfWork unitOfWork) : ICourseServ
         }
         CourseDto courseDto = mapper.Map<CourseDto>(courseEntity);
 
-        return new ApiOkResponse<CourseDto>(courseDto, "Course successfully created.");
+        //return new ApiOkResponse<CourseDto>(courseDto, "Course successfully created.");
+        return new ApiCreatedResponse("Course successfully created.");
     }
 
     public async Task<ApiBaseResponse> GetAllAsync()

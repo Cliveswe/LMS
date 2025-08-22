@@ -53,9 +53,21 @@ namespace LMS.Presentation.Controllers
 
         //Use this when you're not expecting a typed DTO, but just want to return a general Ok(...) or
         //handle errors. This is common in PUT, DELETE, etc., where success might just mean an operation completed.
-        protected ActionResult HandleResponse(ApiBaseResponse response) =>
-            response.Success
-            ? Ok(response) // Return the deleted object wrapped in ApiOkResponse
-            : ProcessError(response);// If delete was not successful
+        //protected ActionResult HandleResponse(ApiBaseResponse response) =>
+        //    response.Success
+        //    ? Ok(response) // Return the deleted object wrapped in ApiOkResponse
+        //    : ProcessError(response);// If delete was not successful
+        protected ActionResult HandleResponse(ApiBaseResponse response)
+        {
+            if (!response.Success)
+                return ProcessError(response);
+
+            if (response is ApiCreatedResponse)
+                return StatusCode(response.StatusCode, response); // 201 Created
+
+            return Ok(response);
+        }
+
+
     }
 }
