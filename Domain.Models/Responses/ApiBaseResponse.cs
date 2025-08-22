@@ -43,6 +43,9 @@ public abstract class ApiNotFoundResponse(string message)
 // Concrete NotFound
 public class ApiConcreteNotFoundResponse(string message) : ApiNotFoundResponse(message) { }
 
+public class ApiActivityNotFoundResponse(string message) : ApiNotFoundResponse(message) { }
+public class ApiModuleNotFoundResponse(string message) : ApiNotFoundResponse(message) { }
+
 public class ApiFailedSaveResponse(string message)
     : ApiBaseResponse(false, message, StatusCodes.Status500InternalServerError)
 {

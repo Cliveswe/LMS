@@ -1,36 +1,42 @@
 ﻿using AutoMapper;
 using Domain.Contracts.Repositories;
 using Domain.Models.Entities;
+using Domain.Models.Responses;
 using LMS.Shared.DTOs.ModuleActivityDtos;
 using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.EntityFrameworkCore;
 using Service.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LMS.Services
 {
     public class ModuleActivityService(IUnitOfWork uow, IMapper mapper) : IModuleActivityService
     {
-        public async Task CreateActivityAsync(int moduleId, CreateModuleActivityDto newModuleActivityDto)
+        public async Task<ApiBaseResponse> CreateActivityAsync(int moduleId, CreateModuleActivityDto newModuleActivityDto)
         {
             newModuleActivityDto.ModuleId = moduleId;
             var newModuleActivity = mapper.Map<ModuleActivity>(newModuleActivityDto);
             uow.ModuleActivityRepository.Create(newModuleActivity);
             await uow.CompleteAsync();
+
+            CreateModuleActivityDto dto = mapper.Map<CreateModuleActivityDto>(newModuleActivity);
+
+            return new ApiOkResponse<CreateModuleActivityDto>(dto, "Course successfully created.");
         }
 
-        public async Task PatchModuleActivityAsync(int id, JsonPatchDocument<PatchModuleActivityDto> patchDoc)
+        public async Task<ApiBaseResponse> PatchModuleActivityAsync(int id, JsonPatchDocument<PatchModuleActivityDto> patchDoc)
         {
             var moduleActivityToPatch = await uow.ModuleActivityRepository.GetAsync(id);
+
+            if (moduleActivityToPatch == null)
+            {
+                return new ApiActivityNotFoundResponse("Module activity not found.");
+            }
+
             var dto = mapper.Map<PatchModuleActivityDto>(moduleActivityToPatch);
 
             patchDoc.ApplyTo(dto);
 
-            //TODO: Are we going to Validate ModelState? Behöver en paket AspNetCore.MVC
+            //TODO: Check the correct nugget to validate the model state
             //if (!ModelState.IsValid)
             //{
             //    throw new GameBadRequestException("There is an error with the new data input.");
@@ -38,25 +44,19 @@ namespace LMS.Services
 
             mapper.Map(dto, moduleActivityToPatch);
             await uow.CompleteAsync();
+
+            return new ApiOkResponse<PatchModuleActivityDto>(dto, "Module activity successfully updated.");
         }
 
-        public IEnumerable<ModuleActivity> GetActivitiesByModule(int moduleId)
+        public async Task<ApiBaseResponse> GetActivitiesByModule(int moduleId)
         {
-            return uow.ModuleActivityRepository.FindByCondition( a => a.ModuleId == moduleId, false);
-        }
+            var response = await uow.ModuleActivityRepository.FindByCondition( a => a.ModuleId == moduleId, false).ToListAsync();
+            if (response.Count == 0)
+            {
+                return new ApiModuleNotFoundResponse("The module you introduced does not exist.");
+            }
+            return new ApiOkResponse<IEnumerable<ModuleActivity>>(response, "Activities retrieved successfully.");
 
-        //public async Task<IEnumerable<ModuleActivity>> GetModuleActivitiesAsync(Guid moduleId)
-        //{
-        //    return await uow.ModuleActivityRepository.GetModuleActivitiesAsync(moduleId);
-        //}
-        //public async Task<ModuleActivity> GetModuleActivityByIdAsync(Guid id)
-        //{
-        //    return await uow.ModuleActivityRepository.GetModuleActivityByIdAsync(id);
-        //}
-        //public async Task DeleteModuleActivityAsync(Guid id)
-        //{
-        //    await uow.ModuleActivityRepository.DeleteModuleActivityAsync(id);
-        //    await uow.CompleteAsync();
-        //}
+        }
     }
 }

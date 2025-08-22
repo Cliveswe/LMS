@@ -1,4 +1,5 @@
 ﻿using Domain.Models.Entities;
+using Domain.Models.Responses;
 using LMS.Shared.DTOs.ModuleActivityDtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -8,30 +9,30 @@ using Service.Contracts;
 
 namespace LMS.Presentation.Controllers
 {
-    [Route("/api/courses/modules/{moduleId:int}/module-activity")]
+    [Route("/api/courses/{courseId:int}/modules/{moduleId:int}/module-activity")]
     [ApiController]
+    [Authorize]
     public class ModuleActivityController(IServiceManager sm) : ApiControllerBase
     {
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> CreateActivityAsync(int moduleId, CreateModuleActivityDto dto)
         {
-            await sm.ModuleActivityService.CreateActivityAsync(moduleId, dto);
-            return NoContent();
+            ApiBaseResponse moduleActivityResponse = await sm.ModuleActivityService.CreateActivityAsync(moduleId, dto);
+            return HandleResponse(moduleActivityResponse);
         }
 
         [HttpPatch("{id:int}")]
-        [Authorize]
-        public async Task PatchActivityAsync(int id, JsonPatchDocument<PatchModuleActivityDto> patchDoc)
+        public async Task<IActionResult> PatchActivityAsync(int id, JsonPatchDocument<PatchModuleActivityDto> patchDoc)
         {
-            await sm.ModuleActivityService.PatchModuleActivityAsync(id, patchDoc);
+            ApiBaseResponse moduleActivityResponse = await sm.ModuleActivityService.PatchModuleActivityAsync(id, patchDoc);
+            return HandleResponse(moduleActivityResponse);
         }
         
         [HttpGet]
-        [Authorize]
-        public IEnumerable<ModuleActivity> GetActivitiesByModule(int moduleId)
+        public async Task<IActionResult> GetActivitiesByModule(int moduleId)
         {
-            return sm.ModuleActivityService.GetActivitiesByModule(moduleId);
+            ApiBaseResponse moduleActivityResponse = await sm.ModuleActivityService.GetActivitiesByModule(moduleId);
+            return HandleResponse(moduleActivityResponse);
         }
     }
 }

@@ -40,7 +40,7 @@ public static class AuthServiceExtension
                {
                    ValidateIssuer = true,
                    ValidateAudience = true,
-                   ValidateLifetime = true,
+                   ValidateLifetime = false, //TODO: Change back to true to turn on the validation of the lifetime of the token
                    ValidateIssuerSigningKey = true,
                    ValidIssuer = jwtSettings.Issuer,
                    ValidAudience = jwtSettings.Audience,
