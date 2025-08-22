@@ -24,7 +24,7 @@ public class CoursesController(IServiceManager serviceManager) : ApiControllerBa
         ApiBaseResponse courseEntityExists = await serviceManager.CourseService.CourseExistsAsync(courseCreateDto.CourseName, courseCreateDto.CourseStartDate);
         if (courseEntityExists.Success)
         {
-            return ProcessError(new ApiAlreadyExistsResponse($"A course with course name \"{courseCreateDto.CourseName}\" with start date: {courseCreateDto.CourseStartDate}, already exists."));
+            return ProcessError(new ApiAlreadyExistsResponse($"A course with course name {courseCreateDto.CourseName} with start date: {courseCreateDto.CourseStartDate}, already exists."));
         }
 
         ApiBaseResponse courseServiceResponse = await serviceManager.CourseService.AddCourseAsync(courseCreateDto);
