@@ -86,11 +86,36 @@ public static class ServiceExtensions
 
     public static void AddServiceLayer(this IServiceCollection services)
     {
+        //Add scoped services.
         services.AddScoped<IServiceManager, ServiceManager>();
         services.AddScoped<ICourseService, CourseService>();
-        services.AddScoped(provider => new Lazy<ICourseService>(() => provider.GetRequiredService<ICourseService>()));
+
+        // Register individual services with lazy loading.
+        services.AddLazy<ICourseService>();
 
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped(provider => new Lazy<IAuthService>(() => provider.GetRequiredService<IAuthService>()));
     }
 }
+
+#region ServiceCollectionExtensions
+
+/// <summary>
+/// Provides extension method to add lazy loading support for services.
+/// </summary>
+public static class ServiceCollectionExtensions
+{
+    /// <summary>
+    /// Registers a service to be resolved lazily using <see cref="Lazy{T}"/>, 
+    /// allowing deferred instantiation until the service is actually needed.
+    /// </summary>
+    /// <typeparam name="TService">The type of the service to be registered.</typeparam>
+    /// <param name="services">The service collection to add the lazy registration to.</param>
+    /// <returns>The updated <see cref="IServiceCollection"/> with the lazy service registration.</returns>
+    public static IServiceCollection AddLazy<TService>(this IServiceCollection services) where TService : class
+    {
+        return services.AddScoped(provider => new Lazy<TService>(() => provider.GetRequiredService<TService>()));
+    }
+}// End of Class ServiceCollectionExtensions.
+
+#endregion ServiceCollectionExtensions
