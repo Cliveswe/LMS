@@ -14,6 +14,9 @@ public class CoursesController(IServiceManager serviceManager) : ApiControllerBa
 {
 
     [HttpPost]
+    [ProducesResponseType(typeof(CourseCreateDto), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ApiAlreadyExistsResponse), StatusCodes.Status409Conflict)]
+    [ProducesResponseType(typeof(ApiFailedSaveResponse), StatusCodes.Status500InternalServerError)]
     [Consumes("application/json")] // Correct MIME type for POSTing a DTO
     public async Task<ActionResult> CreateCourse(CourseCreateDto courseCreateDto)
     {
@@ -30,6 +33,7 @@ public class CoursesController(IServiceManager serviceManager) : ApiControllerBa
             return ProcessError(new ApiFailedSaveResponse("Could not save the newly created Course."));
         }
 
+        //Passed the status codes to this method.
         return HandleResponse(courseServiceResponse);
     }
 
