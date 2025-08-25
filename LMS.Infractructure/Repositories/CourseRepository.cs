@@ -23,9 +23,17 @@ public class CourseRepository : RepositoryBase<Course>, ICourseRepository
             .ToListAsync();
     }
 
-    public async Task<Course?> FindByID(int courseId, bool trackChanges = false)
+    public async Task<Course?> FindByIDAsync(int courseId, bool trackChanges = false)
     {
         return await FindByCondition(c => c.Id == courseId, trackChanges)
+            .FirstOrDefaultAsync();
+    }
+
+    public async Task<Course?> FindByNameAndStartDateAsync(string name, DateTime startDate, bool trackChanges = false)
+    {
+        return await FindByCondition(c =>
+            c.Name == name &&
+            c.StartDate == startDate, trackChanges)
             .FirstOrDefaultAsync();
     }
 
