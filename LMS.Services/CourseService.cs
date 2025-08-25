@@ -53,9 +53,16 @@ public class CourseService(IMapper mapper, IUnitOfWork unitOfWork) : ICourseServ
 
     public async Task<ApiBaseResponse> GetCourseByNameAndStartDateAsync(string name, DateTime startDate)
     {
-        var courseEntity = await unitOfWork.CourseRepository.FindByNameAndStartDateAsync(name, startDate);
+        Course? courseEntity = await unitOfWork.CourseRepository.FindByNameAndStartDateAsync(name, startDate);
 
-        return null;
+        if (courseEntity is null)
+        {
+            return new ApiConcreteNotFoundResponse($"Course {name} with start date {startDate} was not found.");
+        }
+
+        CourseDto courseDto = mapper.Map<CourseDto>(courseEntity);
+
+        return new ApiOkResponse<CourseDto>(courseDto);
     }
 
     public async Task<ApiBaseResponse> CourseExistsAsync(string name, DateTime startDate)
