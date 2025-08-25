@@ -68,11 +68,11 @@ public class CourseService(IMapper mapper, IUnitOfWork unitOfWork) : ICourseServ
     public async Task<ApiBaseResponse> CourseExistsAsync(string name, DateTime startDate)
     {
         // Checks existence of a Course by title and start date.
-
         bool entityExists = await unitOfWork.CourseRepository.CourseExistsByNameAndStartDateAsync(name, startDate);
 
         return entityExists
-            ? new ApiOkResponse<bool>(entityExists)
-            : new ApiConcreteNotFoundResponse($"Course {name} with start date {startDate} does not exists.");
+            ? new ApiAlreadyExistsResponse($"Course '{name}' with start date '{startDate}' already exists.")
+            : new ApiConcreteNotFoundResponse($"Course '{name}' with start date '{startDate}' does not exist.");
+
     }
 }

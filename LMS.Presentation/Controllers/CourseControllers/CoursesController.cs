@@ -13,17 +13,17 @@ namespace LMS.Presentation.Controllers.CourseControllers;
 public class CoursesController(IServiceManager serviceManager) : ApiControllerBase
 {
     [HttpPost]
-    [ProducesResponseType(typeof(CourseCreateDto), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ApiCreatedResponse), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ApiAlreadyExistsResponse), StatusCodes.Status409Conflict)]
     [ProducesResponseType(typeof(ApiFailedSaveResponse), StatusCodes.Status500InternalServerError)]
     [Consumes("application/json")] // Correct MIME type for POSTing a DTO
     public async Task<ActionResult> CreateCourse(CourseCreateDto courseCreateDto)
     {
         //Check if the course already exists.
-        ApiBaseResponse courseEntityExists = await serviceManager.CourseService.CourseExistsAsync(courseCreateDto.CourseName, courseCreateDto.CourseStartDate);
-        if (courseEntityExists.Success)
+        ApiBaseResponse existsResponse = await serviceManager.CourseService.CourseExistsAsync(courseCreateDto.CourseName, courseCreateDto.CourseStartDate);
+        if (existsResponse is ApiAlreadyExistsResponse)
         {
-            return ProcessError(new ApiAlreadyExistsResponse($"A course with course name {courseCreateDto.CourseName} with start date: {courseCreateDto.CourseStartDate}, already exists."));
+            return ProcessError(existsResponse);
         }
 
         ApiBaseResponse courseServiceResponse = await serviceManager.CourseService.AddCourseAsync(courseCreateDto);
@@ -68,5 +68,18 @@ public class CoursesController(IServiceManager serviceManager) : ApiControllerBa
         }
 
         return HandleResponse<CourseDto>(courseGetByIdServiceResponse);
+    }
+
+    [HttpGet("{name}/{startDate}", Name = "GetCourseByNameAndDateAsync")]
+    public async Task<ActionResult<CourseDto>> GetCourseByNameAndDateAsync(string name, DateTime startDate)
+    {
+        ApiBaseResponse response = await serviceManager.CourseService.GetCourseByNameAndStartDateAsync(name, startDate);
+
+        if (!response.Success)
+        {
+            return ProcessError(response);
+        }
+
+        return HandleResponse<CourseDto>(response);
     }
 }
