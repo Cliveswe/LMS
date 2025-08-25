@@ -70,7 +70,7 @@ public class CoursesController(IServiceManager serviceManager) : ApiControllerBa
         return HandleResponse<CourseDto>(courseGetByIdServiceResponse);
     }
 
-    [HttpGet("{name}/{startDate}", Name = "GetCourseByNameAndDateAsync")]
+    [HttpGet("{name}/{startDate:datetime}", Name = "GetCourseByNameAndDateAsync")]
     public async Task<ActionResult<CourseDto>> GetCourseByNameAndDateAsync(string name, DateTime startDate)
     {
         ApiBaseResponse response = await serviceManager.CourseService.GetCourseByNameAndStartDateAsync(name, startDate);
