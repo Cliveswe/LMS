@@ -20,18 +20,31 @@ public class CoursesController(IServiceManager serviceManager) : ApiControllerBa
     public async Task<ActionResult> CreateCourse(CourseCreateDto courseCreateDto)
     {
         //Check if the course already exists.
-        ApiBaseResponse existsResponse = await serviceManager.CourseService.CourseExistsAsync(courseCreateDto.CourseName, courseCreateDto.CourseStartDate);
+        ApiBaseResponse existsResponse = await serviceManager
+            .CourseService
+            .CourseExistsAsync(courseCreateDto.CourseName, courseCreateDto.CourseStartDate);
+
         if (existsResponse is ApiAlreadyExistsResponse)
         {
             return ProcessError(existsResponse);
         }
 
-        ApiBaseResponse courseServiceResponse = await serviceManager.CourseService.AddCourseAsync(courseCreateDto);
+        //Add the new course.
+        ApiBaseResponse courseServiceResponse = await serviceManager
+            .CourseService
+            .AddCourseAsync(courseCreateDto);
+
         if (!courseServiceResponse.Success)
         {
             return ProcessError(new ApiFailedSaveResponse("Could not save the newly created Course."));
         }
 
+
+        // If the response includes a CreatedId, generate Location header dynamically
+        if (courseServiceResponse is ApiCreatedResponse created && created.CreatedId.HasValue)
+        {
+            Response.Headers.Add("Location", $"/api/courses/{created.CreatedId.Value}");
+        }
         //Passed the status codes to this method.
         return HandleResponse(courseServiceResponse);
     }
@@ -84,9 +97,23 @@ public class CoursesController(IServiceManager serviceManager) : ApiControllerBa
     }
 
     [HttpDelete("{id:int}", Name = "DeleteCourseById")]
+    [ProducesResponseType(typeof(ApiOkResponse<string>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiConcreteNotFoundResponse), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ApiFailedSaveResponse), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> DeleteCourseById(int id)
     {
+        ApiBaseResponse response = await serviceManager.CourseService.RemoveCourseAsync(id);
 
-        return NoContent();
+        if (response is null)
+        {
+            return ProcessError(new ApiFailedSaveResponse("An error occurred while attempting to delete the course."));
+        }
+
+        if (!response.Success)
+        {
+            return ProcessError(response);
+        }
+
+        return HandleResponse(response);
     }
 }

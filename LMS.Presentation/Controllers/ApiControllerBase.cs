@@ -59,7 +59,7 @@ public class ApiControllerBase : ControllerBase
                 response.Success,
                 response.Message,
                 response.StatusCode,
-                Path = HttpContext.Request.Path,
+                HttpContext.Request.Path,
                 Data = response.GetOkResult<T>()
             });
 
@@ -68,7 +68,7 @@ public class ApiControllerBase : ControllerBase
             response.Success,
             response.Message,
             response.StatusCode,
-            Path = HttpContext.Request.Path,
+            HttpContext.Request.Path,
             Data = response.GetOkResult<T>()
         });
     }
@@ -87,14 +87,14 @@ public class ApiControllerBase : ControllerBase
                 response.Success,
                 response.Message,
                 response.StatusCode,
-                Path = HttpContext.Request.Path
+                HttpContext.Request.Path
             })
             : Ok(new
             {
                 response.Success,
                 response.Message,
                 response.StatusCode,
-                Path = HttpContext.Request.Path
+                HttpContext.Request.Path
             });
     }
 }

@@ -15,4 +15,6 @@ public interface ICourseService
     Task<ApiBaseResponse> GetCourseByNameAndStartDateAsync(string name, DateTime startDate);
 
     Task<ApiBaseResponse> CourseExistsAsync(string name, DateTime startDate);
+
+    Task<ApiBaseResponse> RemoveCourseAsync(int courseId);
 }

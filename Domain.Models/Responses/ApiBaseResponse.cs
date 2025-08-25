@@ -53,6 +53,8 @@ public class ApiAlreadyExistsResponse(string message)
 {
 }
 
-public class ApiCreatedResponse(string message)
+public class ApiCreatedResponse(string message, int? createdId = null)
     : ApiBaseResponse(true, message, StatusCodes.Status201Created)
-{ }
+{
+    public int? CreatedId { get; } = createdId;
+}

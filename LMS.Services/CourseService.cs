@@ -1,4 +1,4 @@
-﻿//Ignore Spelling: dto
+﻿//Ignore Spelling: dto api
 using AutoMapper;
 using Domain.Contracts.Repositories;
 using Domain.Models.Entities;
@@ -9,6 +9,8 @@ using Service.Contracts;
 namespace LMS.Services;
 public class CourseService(IMapper mapper, IUnitOfWork unitOfWork) : ICourseService
 {
+
+
     public async Task<ApiBaseResponse> AddCourseAsync(CourseCreateDto courseCreateDto)
     {
 
@@ -23,10 +25,9 @@ public class CourseService(IMapper mapper, IUnitOfWork unitOfWork) : ICourseServ
         {
             return new ApiFailedSaveResponse("Failed to save the new course.");
         }
-        //CourseDto courseDto = mapper.Map<CourseDto>(courseEntity);
 
-        //return new ApiOkResponse<CourseDto>(courseDto, "Course successfully created.");
-        return new ApiCreatedResponse("Course successfully created.");
+        // Return ApiCreatedResponse with the new course Id
+        return new ApiCreatedResponse("Course successfully created.", courseEntity.Id);
     }
 
     public async Task<ApiBaseResponse> GetAllAsync()
@@ -74,5 +75,20 @@ public class CourseService(IMapper mapper, IUnitOfWork unitOfWork) : ICourseServ
             ? new ApiAlreadyExistsResponse($"Course '{name}' with start date '{startDate}' already exists.")
             : new ApiConcreteNotFoundResponse($"Course '{name}' with start date '{startDate}' does not exist.");
 
+    }
+
+    public async Task<ApiBaseResponse> RemoveCourseAsync(int courseId)
+    {
+        Course? courseEntity = await unitOfWork.CourseRepository.FindByIDAsync(courseId);
+        if (courseEntity is null)
+        {
+            return new ApiConcreteNotFoundResponse($"Course with id {courseId} was not found.");
+        }
+        unitOfWork.CourseRepository.Remove(courseEntity);
+        int changes = await unitOfWork.CompleteAsync();
+
+        return changes == 0
+            ? new ApiFailedSaveResponse("Failed to delete course.")
+            : new ApiOkResponse<string>($"Course with id {courseEntity.Id} successfully deleted.");
     }
 }

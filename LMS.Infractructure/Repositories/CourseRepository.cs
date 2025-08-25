@@ -14,6 +14,7 @@ public class CourseRepository : RepositoryBase<Course>, ICourseRepository
     public void Add(Course course)
     {
         Create(course);
+
     }
 
     public async Task<IEnumerable<Course>> GetAllAsync(bool trackChanges = false)
@@ -48,5 +49,10 @@ public class CourseRepository : RepositoryBase<Course>, ICourseRepository
             c.StartDate >= startOfDay && c.StartDate < endOfDay,
             false
         ).AnyAsync();
+    }
+
+    public void Remove(Course course)
+    {
+        Delete(course);
     }
 }

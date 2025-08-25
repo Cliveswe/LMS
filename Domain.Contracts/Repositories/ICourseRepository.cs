@@ -13,4 +13,7 @@ public interface ICourseRepository
     Task<Course?> FindByNameAndStartDateAsync(string name, DateTime startDate, bool trackChanges = false);
 
     Task<bool> CourseExistsByNameAndStartDateAsync(string name, DateTime startDate);
+
+    void Remove(Course course);
+
 }
