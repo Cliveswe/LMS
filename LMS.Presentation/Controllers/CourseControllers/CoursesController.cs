@@ -55,9 +55,18 @@ public class CoursesController(IServiceManager serviceManager) : ApiControllerBa
     }
 
     [HttpGet("{id:int}", Name = "GetCourseById")]
-    public async Task<ActionResult<CourseDto>> GetCourseById()
+    [ProducesResponseType(typeof(ApiBaseResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiBaseResponse), StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<CourseDto>> GetCourseById(int id)
     {
 
-        return Ok();
+        ApiBaseResponse courseGetByIdServiceResponse = await serviceManager.CourseService.GetCourseByIdAsync(id);
+
+        if (!courseGetByIdServiceResponse.Success)
+        {
+            return ProcessError(courseGetByIdServiceResponse);
+        }
+
+        return HandleResponse<CourseDto>(courseGetByIdServiceResponse);
     }
 }
