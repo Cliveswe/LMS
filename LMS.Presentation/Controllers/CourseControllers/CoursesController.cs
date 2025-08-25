@@ -82,4 +82,11 @@ public class CoursesController(IServiceManager serviceManager) : ApiControllerBa
 
         return HandleResponse<CourseDto>(response);
     }
+
+    [HttpDelete("{id:int}", Name = "DeleteCourseById")]
+    public async Task<ActionResult> DeleteCourseById(int id)
+    {
+
+        return NoContent();
+    }
 }
