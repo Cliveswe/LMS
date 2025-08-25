@@ -23,7 +23,7 @@ public class CourseService(IMapper mapper, IUnitOfWork unitOfWork) : ICourseServ
         {
             return new ApiFailedSaveResponse("Failed to save the new course.");
         }
-        CourseDto courseDto = mapper.Map<CourseDto>(courseEntity);
+        //CourseDto courseDto = mapper.Map<CourseDto>(courseEntity);
 
         //return new ApiOkResponse<CourseDto>(courseDto, "Course successfully created.");
         return new ApiCreatedResponse("Course successfully created.");
@@ -36,6 +36,19 @@ public class CourseService(IMapper mapper, IUnitOfWork unitOfWork) : ICourseServ
         IEnumerable<CourseDto> courseDto = mapper.Map<IEnumerable<CourseDto>>(course);
 
         return new ApiOkResponse<IEnumerable<CourseDto>>(courseDto);
+    }
+
+    public async Task<ApiBaseResponse> GetCourseByIdAsync(int courseId)
+    {
+        Course? courseEntity = await unitOfWork.CourseRepository.FindByID(courseId);
+        if (courseEntity is null)
+        {
+            return new ApiConcreteNotFoundResponse($"Course with id {courseId} was not found.");
+        }
+
+        CourseDto courseDto = mapper.Map<CourseDto>(courseEntity);
+
+        return new ApiOkResponse<CourseDto>(courseDto);
     }
 
     public async Task<ApiBaseResponse> CourseExistsAsync(string name, DateTime startDate)

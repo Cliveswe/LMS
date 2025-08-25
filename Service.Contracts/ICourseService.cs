@@ -10,5 +10,9 @@ public interface ICourseService
 
     Task<ApiBaseResponse> GetAllAsync();
 
+    Task<ApiBaseResponse> GetCourseByIdAsync(int id);
+
+    Task<ApiBaseResponse> GetCourseByNameAndStartDateAsync(string name, DateTime startDate);
+
     Task<ApiBaseResponse> CourseExistsAsync(string name, DateTime startDate);
 }

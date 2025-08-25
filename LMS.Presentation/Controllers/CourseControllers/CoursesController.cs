@@ -12,7 +12,6 @@ namespace LMS.Presentation.Controllers.CourseControllers;
 [Produces("application/json")] // Ensures all responses are documented as JSON
 public class CoursesController(IServiceManager serviceManager) : ApiControllerBase
 {
-
     [HttpPost]
     [ProducesResponseType(typeof(CourseCreateDto), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ApiAlreadyExistsResponse), StatusCodes.Status409Conflict)]
