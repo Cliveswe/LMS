@@ -53,4 +53,11 @@ public class CoursesController(IServiceManager serviceManager) : ApiControllerBa
         //Return the results with 200 Ok.
         return HandleResponse<IEnumerable<CourseDto>>(courseGetAllServiceResponse);
     }
+
+    [HttpGet("{id:int}", Name = "GetCourseById")]
+    public async Task<ActionResult<CourseDto>> GetCourseById()
+    {
+
+        return Ok();
+    }
 }

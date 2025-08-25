@@ -6,7 +6,7 @@ public class UnitOfWork : IUnitOfWork
 {
     private readonly ApplicationDbContext context;
 
-    private ICourseRepository courseRepository;
+    private ICourseRepository? courseRepository;
 
     public UnitOfWork(ApplicationDbContext context)
     {
